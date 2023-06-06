@@ -1,54 +1,59 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { GlobalContext } from "../Contexts/GlobalContext";
+import { useContext } from "react";
 
 export default function Navbar() {
+  const [globalState, globalDispatch] = useContext(GlobalContext);
+  const location = useLocation();
+
   return (
     <>
-      <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style={{ backgroundColor: "navy" }}>
-        <div class="container">
-          <Link to="/" class="navbar-brand">
+      <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={{ backgroundColor: "brown" }}>
+        <div className="container">
+          <Link to="/" className="navbar-brand">
             Navbar
           </Link>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <Link to="/" class="nav-link active" aria-current="page">
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <Link to="/" className="nav-link" aria-current="page">
                   Home
                 </Link>
               </li>
-              <li class="nav-item">
-                <Link to="/About" class="nav-link">
+              <li className="nav-item">
+                <Link to="/About" className="nav-link">
                   About
                 </Link>
               </li>
-              <li class="nav-item">
-                <Link to="/Product" class="nav-link">
+              <li className="nav-item">
+                <Link to="/Product" className="nav-link">
                   Product
                 </Link>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Dropdown
                 </a>
-                <ul class="dropdown-menu">
+                <ul className="dropdown-menu">
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a className="dropdown-item" href="#">
                       Action
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a className="dropdown-item" href="#">
                       Another action
                     </a>
                   </li>
                   <li>
-                    <hr class="dropdown-divider" />
+                    <hr className="dropdown-divider" />
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a className="dropdown-item" href="#">
                       Something else here
                     </a>
                   </li>
@@ -56,37 +61,107 @@ export default function Navbar() {
               </li>
             </ul>
 
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="#">
-                  Login
-                </a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Hello, Admin
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+              {globalState.isLogin ? (
+                <>
                   <li>
-                    <a class="dropdown-item" href="#">
-                      Profile
+                    <Link to="/cart">
+                      <div
+                        style={{
+                          position: "relative",
+                          display: "block",
+                          width: "30px",
+                          overflow: "hidden",
+                          top: "4px",
+                        }}
+                      >
+                        {globalState.dataCarts.length > 0 ? (
+                          <>
+                            <span
+                              style={{
+                                position: "absolute",
+                                top: "0",
+                                right: "0",
+                                zIndex: "2",
+                                borderRadius: "4px",
+                                backgroundColor: "red",
+                                width: "19px",
+                                height: "14px",
+                                color: "white",
+                                fontSize: "10px",
+                                lineHeight: "16px",
+                                display: "block",
+                                textAlign: "center",
+                                fontFamily: "sans-serif",
+                              }}
+                            >
+                              {globalState.dataCarts.length}
+                            </span>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+
+                        <svg
+                          style={{
+                            position: "relative",
+                            top: "1px",
+                          }}
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="23"
+                          height="25"
+                          fill="white"
+                          class="bi bi-cart"
+                          viewBox="0 0 18 15"
+                        >
+                          <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                        </svg>
+                      </div>
+                    </Link>
+                  </li>
+                  <li className="nav-item dropdown">
+                    <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Hello, Admin
                     </a>
+                    <ul className="dropdown-menu dropdown-menu-end">
+                      <li>
+                        <a className="dropdown-item" href="#">
+                          Profile
+                        </a>
+                      </li>
+                      <li>
+                        <a className="dropdown-item" href="#">
+                          Another action
+                        </a>
+                      </li>
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                      <li>
+                        <a
+                          onClick={() => {
+                            globalDispatch({
+                              type: "PROCESS_LOGOUT",
+                            });
+                          }}
+                          className="dropdown-item"
+                          href="#"
+                        >
+                          Log Out
+                        </a>
+                      </li>
+                    </ul>
                   </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      Another action
-                    </a>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item">
+                    <Link to="/login" className="nav-link" aria-current="page">
+                      Login
+                    </Link>
                   </li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      Log Out
-                    </a>
-                  </li>
-                </ul>
-              </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

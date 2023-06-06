@@ -1,7 +1,9 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { useContext } from "react";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { GlobalContext } from "../Contexts/GlobalContext";
 
 export default function PrivateRoute() {
-  const login = false;
-  return login ? <Outlet /> : alert("Anda Belum Login");
+  const [globalState, globalDispatch] = useContext(GlobalContext);
+  return globalState.isLogin ? <Outlet /> : <Navigate to="/login" />;
 }

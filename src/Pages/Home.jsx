@@ -1,11 +1,36 @@
-import {useState} from "react";
+import { useState, useContext } from "react";
 import { Button } from "react-bootstrap";
+import { dataProduct } from "./Products/DataProduct";
+import { formatRupiah } from "../Config/Config";
+import { GlobalContext } from "../Contexts/GlobalContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-  const 
+  const [searchResultsDataProduct, setSearchResultsDataProduct] = useState(dataProduct);
+  const [globalState, globalDispatch] = useContext(GlobalContext);
+  const handleLogin = () => {
+    globalDispatch({
+      type: "PROCESS_LOGIN",
+    });
+  };
+
+  const navigate = useNavigate();
+  const handleOrder = (id) => {
+    if (globalState.isLogin) {
+      const dataById = searchResultsDataProduct.find((item) => item.id === id);
+      globalDispatch({
+        type: "ADD_PRODUCT_TO_CART",
+        data: dataById,
+      });
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="container">
-      <h2>Home</h2>
+      <h2>Home </h2>
+
       <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="true">
         <div className="carousel-indicators">
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
@@ -33,14 +58,53 @@ export default function Home() {
         </button>
       </div>
 
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Rem debitis ullam accusamus temporibus incidunt laborum beatae voluptas possimus, eum veritatis tempore sequi sit aliquam minus voluptate quos excepturi voluptatum nulla
-        eligendi quae! Explicabo distinctio, iusto, quasi ipsum laboriosam magnam architecto debitis dolorum in voluptatem temporibus veniam vel modi ullam perspiciatis optio. Dolorum nesciunt sit, natus fugit ea nam quod! A odio,
-        consequuntur voluptatum maiores cum temporibus blanditiis dolore vel beatae cumque obcaecati quasi distinctio magnam voluptatem mollitia deleniti deserunt quod, sint dolores. Aut suscipit ratione quas alias quo quaerat quod a
-        commodi minus, iste voluptate aspernatur repellat sapiente expedita, deleniti autem, aliquid inventore totam eligendi vero? Ullam, minima voluptatum consectetur harum quam amet. Sunt, explicabo. Iure culpa fuga assumenda recusandae
-        voluptatum soluta inventore labore autem. Rem, quas animi id ducimus doloribus sapiente temporibus molestias mollitia accusamus natus dolorum tenetur optio facilis qui, hic dignissimos vitae veritatis labore maiores eaque quibusdam
-        dolorem. Inventore culpa at magni voluptatum fugit quibusdam quasi veniam unde nihil voluptates possimus odit, saepe
-      </p>
+      <div className="mb-5">
+        <h1 className="mt-4" style={{ color: "#BF3919" }}>
+          {/* Let's Order {globalState.dataUser.fullname} */}
+        </h1>
+
+        <div className="mt-5">
+          {/* <div className="row mb-3">
+            <div className="col-lg-9"> */}
+          <h1>Data Product</h1>{" "}
+          {/* <button className="btn btn-success" onClick={handleLogin}>
+            Login
+          </button> */}
+          {/* </div>
+          </div> */}
+          <div className="row row-cols-1 row-cols-md-4 g-4">
+            {searchResultsDataProduct.map((item, index) => {
+              return (
+                <div key={index} className="col">
+                  <div className="card h-100 shadow">
+                    <img src={require("../img/" + item.img)} className="card-img-top" alt="..." />
+                    <div className="card-body">
+                      <h5 className="card-title">{item.productName}</h5>
+                      <p className="card-text">{formatRupiah(item.price)}</p>
+                      <div className="row">
+                        <div className="col-lg-6">
+                          <button className="btn btn-secondary w-100">Detail</button>
+                        </div>
+                        <div className="col-lg-6">
+                          <button
+                            onClick={() => {
+                              handleOrder(item.id);
+                            }}
+                            className="btn btn-danger w-100"
+                          >
+                            Order
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      <pre>{JSON.stringify(globalState.dataCarts, null, 2)}</pre>
     </div>
   );
 }

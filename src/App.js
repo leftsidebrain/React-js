@@ -7,19 +7,28 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import About from "./Pages/About";
 import Product from "./Pages/Products/Product";
 import PrivateRoute from "./Components/PrivateRoute";
+import { GlobalContext, GlobalContextProvider } from "./Contexts/GlobalContext";
+import Login from "./Pages/Products/Login";
+import Cart from "./Components/Cart";
+import Register from "./Pages/Products/Register";
 function App() {
-  const props = "nilai Props";
+  // const contohProps = "ini adalah nilai Props";
   return (
     <>
       <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/About" element={<About nilaiProps={props} />} />
-          <Route element={<PrivateRoute />}>
-            <Route path="/Product" element={<Product />} />
-          </Route>
-        </Routes>
+        <GlobalContextProvider>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/About" element={<About />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/Product" element={<Product />} />
+            </Route>
+          </Routes>
+        </GlobalContextProvider>
       </BrowserRouter>
     </>
   );
